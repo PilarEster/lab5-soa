@@ -24,7 +24,6 @@ const val DIRECT_ROUTE = "direct:twitter"
 const val COUNT_ROUTE = "direct:extractor"
 const val LOG_ROUTE = "direct:log"
 const val INDEX_VIEW = "index"
-const val DEFAULT_MAX = 5 
 
 @Controller
 class SearchController(private val producerTemplate: ProducerTemplate) {
@@ -49,7 +48,7 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
                 val key: String = exchange.getIn().getHeader("keywords") as? String ?: ""
                 val (max, remind) = key.split(" ").partition { it.startsWith("max:") }
                 exchange.getIn().setHeader("keywords", remind.joinToString(" "))
-                exchange.getIn().setHeader("count", DEFAULT_MAX)
+                exchange.getIn().setHeader("count", 5)
                 max.firstOrNull()
                     ?.drop(beginMax.length)
                     ?.toIntOrNull()
